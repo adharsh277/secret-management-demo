@@ -2,91 +2,140 @@
 
 
 
-📌 Project Overview
-This project demonstrates how to securely manage and use secrets like API keys, tokens, or credentials in GitHub Actions workflows.
 
-It leverages GitHub Secrets to safely inject sensitive values into CI/CD pipelines — without exposing them in logs or code. This is crucial for real-world automation, especially when deploying, calling APIs, or logging into services.
+
+📌 Project Overview
+
+This repository presents a formal demonstration of managing and utilizing encrypted secrets within GitHub Actions for secure and efficient CI/CD workflows. The project aims to simulate real-world automation practices for software delivery pipelines that require handling sensitive credentials.
+
+Key objectives include:
+
+Secure storage of secrets using GitHub's encrypted secrets feature
+
+Accessing secrets within workflow environments
+
+Ensuring secrets remain masked in workflow logs
+
+Using secrets in actual tasks like API authentication and script execution
+
+🛠️ Technologies and Tools
+
+Category
+
+Tool/Service
+
+CI/CD
+
+GitHub Actions
+
+Secret Storage
+
+GitHub Encrypted Secrets
+
+Language
+
+Python
+
+Scripting
+
+Bash, Curl
+
+SCM
+
+Git
 
 🗂️ Repository Structure
-graphql
-Copy
-Edit
 secret-management-demo/
 ├── .github/
 │   └── workflows/
 │       └── secrets-demo.yml     # GitHub Actions workflow definition
-├── run.py                       # Optional Python script to use secrets
+├── run.py                       # Python script to demonstrate secret usage
 └── README.md                    # Project documentation
-🚀 Workflow Functionality
-✅ Retrieves secrets securely from GitHub (e.g., API_KEY, USERNAME)
 
-✅ Logs values with masking (***)
+🔐 Secrets Configuration
 
-✅ Demonstrates use of secrets in:
+To run this workflow, define the following repository-level secrets:
 
-Echo/log statements
+Secret Name
 
-curl request (API auth demo)
+Example Value
 
-Python script (environment variable access)
+Purpose
 
-🔧 GitHub Secrets Used
-You need to configure the following repository-level secrets:
+API_KEY
 
-Secret Name	Example Value	Purpose
-API_KEY	12345-SECRET-KEY	Used in mock API request
-USERNAME	captain_copper	Sample value for logging
+12345-SECRET-KEY
 
-⚙️ Workflow Trigger
-This workflow runs automatically on every push:
+Used for secure API requests
 
-yaml
-Copy
-Edit
+USERNAME
+
+captain_copper
+
+Sample username for demo
+
+⚙️ Workflow Functionality
+
+The CI/CD pipeline performs the following actions:
+
+Checkout source code from the repository
+
+Retrieve secrets and inject them into the environment
+
+Print secrets safely using masked logging
+
+Use curl to simulate an API call with a secret token
+
+Execute a Python script that accesses secrets from environment variables
+
+🧪 Sample Workflow Configuration
+
+name: Secret Management Demo
+
 on: [push]
-🧪 Sample Workflow Steps
-🧾 Checkout the repository
 
-🔐 Load and print secrets (masked in logs)
+jobs:
+  use-secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-🌐 Call mock API using curl and API_KEY
+      - name: Print secrets securely
+        run: |
+          echo "Using USERNAME: $USERNAME"
+          echo "Using API_KEY: $API_KEY"
+        env:
+          USERNAME: ${{ secrets.USERNAME }}
+          API_KEY: ${{ secrets.API_KEY }}
 
-🐍 Run run.py script that uses secrets via environment variables
+      - name: Call API with secret
+        run: curl -H "Authorization: Bearer $API_KEY" https://httpbin.org/bearer
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
 
-🐍 Python Script Example (Optional)
-run.py
+      - name: Run Python script using secrets
+        run: python run.py
+        env:
+          API_KEY_SECRET: ${{ secrets.API_KEY }}
+          USERNAME: ${{ secrets.USERNAME }}
 
-python
-Copy
-Edit
+🐍 Python Script: run.py
 import os
 print("Using secrets in Python:")
 print("API_KEY_SECRET:", os.getenv("API_KEY_SECRET"))
 print("USERNAME:", os.getenv("USERNAME"))
-🔒 Output Example (Logs)
-sql
-Copy
-Edit
-Using USERNAME: ***
-Using API_KEY: ***
-GitHub automatically masks all secret values in logs to ensure no sensitive data is exposed.
 
-📦 How to Run This Project
-🌀 Clone the repository
+📋 How to Use This Project
 
-🔐 Add secrets under
-Settings → Secrets and Variables → Actions
+Fork or clone this repository
 
-🟢 Push any commit
+Navigate to Settings → Secrets and Variables → Actions
 
-📋 Go to Actions tab and inspect logs for masked secret use
+Add the required secrets: API_KEY, USERNAME
 
-📘 Topics Covered
-✅ GitHub Actions CI/CD basics
+Push a commit to trigger the workflow
 
-✅ Secure secret management using secrets.<NAME>
+Review logs under the Actions tab to verify masking and behavior
 
-✅ Workflow design with real usage (curl, script)
-
-✅ Masked logging and environment variables
 
