@@ -1,10 +1,6 @@
-#🔐 Secret Management Demo using GitHub Actions
+# 🔐 Secret Management Demo using GitHub Actions
 
-
-
-
-
-#📌 Project Overview
+## 📌 Project Overview
 
 This repository presents a formal demonstration of managing and utilizing encrypted secrets within GitHub Actions for secure and efficient CI/CD workflows. The project aims to simulate real-world automation practices for software delivery pipelines that require handling sensitive credentials.
 
